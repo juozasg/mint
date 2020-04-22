@@ -110,7 +110,7 @@ module Mint
     def initialize_cache
       files = self.files
       files.each_with_index do |file, index|
-        @cache[file] ||= Parser.parse(file)
+        @cache[normalize_path(file)] ||= Parser.parse(file)
 
         yield file, index, files.size
       end
@@ -172,7 +172,7 @@ module Mint
       files.each do |file|
         path = File.real_path(file)
 
-        @cache[path] ||= begin
+        @cache[normalize_path(file)] ||= begin
           process(File.read(path), path)
         end
       end
@@ -189,7 +189,7 @@ module Mint
     end
 
     def update(contents, file)
-      @cache[file] = process(contents, file)
+      @cache[normalize_path(file)] = process(contents, file)
       check!
       @error = nil
 
@@ -198,6 +198,10 @@ module Mint
       @error = error
 
       call "change", error
+    end
+
+    private def normalize_path(file)
+      Path[file].normalize.to_s
     end
 
     private def process(contents, file)
