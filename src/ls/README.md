@@ -4,23 +4,27 @@ This folder contains the code for the language server.
 
 ## Hover
 
-Here is the status of hover information for each node:
+Here are the nodes with only have type hover information:
 
-- [ ] Access
-- [x] Argument
-- [ ] ~ArrayAccess~
-- [ ] ~ArrayDestructuring~
-- [ ] ~ArrayLiteral~
-- [ ] ~BoolLiteral~
-- [ ] ~Call~
-- [ ] Case
-- [ ] CaseBranch
-- [ ] Catch
-- [ ] CatchAll
-- [x] Enum
-- [x] EnumId -> Enum
-- [x] Function
-- [x] ModuleAccess -> Function
-- [x] Property
-- [x] State
-- [x] Type
+- `Access`
+- `ArrayAccess`
+- `ArrayDestructuring`
+- `ArrayLiteral`
+- `BoolLiteral`
+- `Call`
+- `Case`
+- `CaseBranch`
+
+Here are the nodes which have additinonal hover information:
+
+- `Argument`
+- `Enum`
+- `Function`
+- `Property`
+- `State`
+- `Type`
+
+Here are the nodes which reference an other hode on hover:
+
+- `EnumId` -> `Enum`
+- `ModuleAccess` -> `Function`

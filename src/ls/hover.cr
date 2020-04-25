@@ -12,12 +12,13 @@ module Mint
       # Fallback handler for nodes that does not have a handler yet.
       def hover(node : Ast::Node, workspace) : Array(String | Nil)
         type =
-          workspace.type_checker.cache[node]?.try do |value|
-            "TYPE: #{value.to_mint}"
-          end
+          workspace
+            .type_checker
+            .cache[node]?
+            .try(&.to_pretty)
 
         [
-          "MISSING HOVER INFO: #{node.class}\n",
+          "DEBUG HOVER INFO: #{node.class}\n",
           type,
         ]
       end
