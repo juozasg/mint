@@ -41,7 +41,7 @@ module Mint
             # the error istead.
             [
               "Cannot provide hover data because of an error:\n",
-              "```\n#{error.to_terminal.to_s}\n```",
+              "```\n#{error.to_terminal}\n```",
             ]
           else
             # We get the stack of nodes under the cursor

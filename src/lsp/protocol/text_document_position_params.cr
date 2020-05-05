@@ -38,6 +38,7 @@ module LSP
           when "\n", "\r"
             line_count += 1
             line_char_count = 0
+          else
           end
 
           line_char_count += 1
