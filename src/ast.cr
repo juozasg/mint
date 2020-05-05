@@ -50,7 +50,7 @@ module Mint
                    @nodes = [] of Node)
     end
 
-    def main : Component | Nil
+    def main : Component?
       @components.find(&.name.==("Main"))
     end
 

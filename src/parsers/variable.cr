@@ -20,7 +20,7 @@ module Mint
       node
     end
 
-    def variable_attribute_name : Ast::Variable | Nil
+    def variable_attribute_name : Ast::Variable?
       start do |start_position|
         value = gather do
           next unless char.in_set? "a-z"
@@ -57,11 +57,11 @@ module Mint
       node
     end
 
-    def variable_with_dashes(track = true) : Ast::Variable | Nil
+    def variable_with_dashes(track = true) : Ast::Variable?
       start { variable_with_dashes! SkipError, track }
     end
 
-    def variable(track = true) : Ast::Variable | Nil
+    def variable(track = true) : Ast::Variable?
       start { variable! SkipError, track }
     end
   end

@@ -14,33 +14,36 @@ module Mint
       end
     end
 
-    @dependencies = [] of Mint::Installer::Dependency
-    @formatter_config = Formatter::Config.new
     @parser = JSON::PullParser.new("{}")
-    @source_directories = [] of String
-    @test_directories = [] of String
-    @external_files = {
-      "javascripts" => [] of String,
-      "stylesheets" => [] of String,
+
+    getter dependencies = [] of Mint::Installer::Dependency
+    getter formatter_config = Formatter::Config.new
+    getter source_directories = %w[]
+    getter test_directories = %w[]
+    getter external_files = {
+      "javascripts" => %w[],
+      "stylesheets" => %w[],
     }
-    @application = Application.new
-    @name = ""
+    getter application = Application.new
+    getter name = ""
+    getter root : String
 
     json_error MintJsonRootNotAnObject
     json_error MintJsonRootInvalidKey
 
-    getter test_directories, source_directories, dependencies, application
-    getter external_files, name, root, formatter_config
+    def initialize(@json : String, @root : String, @file : String)
+      begin
+        @parser = JSON::PullParser.new(@json)
+      rescue exception : JSON::ParseException
+        raise MintJsonInvalidJson, {
+          "node" => node(exception),
+        }
+      end
+      parse_root
+    end
 
     def self.from_file(path)
       new File.read(path), File.dirname(path), path
-    rescue exception : IO::Error
-      raise MintJsonInvalidFile, {
-        "result" => exception.to_s,
-        "path"   => path,
-      }
-    rescue error
-      raise error
     end
 
     def self.parse_current : MintJson
@@ -85,20 +88,9 @@ module Mint
       node @parser.location
     end
 
-    def initialize(@json : String, @root : String, @file : String)
-      begin
-        @parser = JSON::PullParser.new(@json)
-      rescue exception : JSON::ParseException
-        raise MintJsonInvalidJson, {
-          "node" => node(exception),
-        }
-      end
-      parse_root
-    end
-
     def source_files
       glob =
-        source_directories.map { |dir| "#{root}/#{dir}/**/*.mint" }
+        source_directories.map { |dir| SourceFiles.glob_pattern(@root, dir) }
 
       Dir.glob(glob)
     end
@@ -372,6 +364,7 @@ module Mint
         "node"      => node(location),
         "directory" => directory,
       } unless Dir.exists?(File.join(@root, directory))
+
       @test_directories << directory
     rescue exception : JSON::ParseException
       raise MintJsonTestDirectoryInvalid, {
@@ -408,7 +401,7 @@ module Mint
     json_error MintJsonIndentSizeInvalid
 
     def parse_indent_size
-      @parser.read_int.clamp(0, 100)
+      @parser.read_int.clamp(0, 100).to_i
     rescue exception : JSON::ParseException
       raise MintJsonIndentSizeInvalid, {
         "node" => node(exception),
@@ -507,7 +500,7 @@ module Mint
     end
 
     def parse_keywords
-      keywords = [] of String
+      keywords = %w[]
 
       @parser.read_array do
         keywords << parse_keyword

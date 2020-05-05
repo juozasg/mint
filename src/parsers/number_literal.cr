@@ -2,7 +2,7 @@ module Mint
   class Parser
     syntax_error NumberLiteralExpectedDecimal
 
-    def number_literal : Ast::NumberLiteral | Nil
+    def number_literal : Ast::NumberLiteral?
       start do |start_position|
         negation = char! '-'
 
@@ -23,7 +23,7 @@ module Mint
 
         self << Ast::NumberLiteral.new(
           from: start_position,
-          value: value.to_f64,
+          value: value,
           float: float,
           to: position,
           input: data)

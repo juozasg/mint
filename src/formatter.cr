@@ -3,15 +3,15 @@ require "digest/md5"
 module Mint
   class Formatter
     class Config
-      getter indent_size
+      getter indent_size : Int32
 
-      def initialize(@indent_size : Int64 | Int32 = 2)
+      def initialize(@indent_size = 2)
       end
     end
 
-    getter config
+    getter config : Config
 
-    def initialize(@config : Config = Config.new)
+    def initialize(@config = Config.new)
       @skip = [] of {String, String}
     end
 
