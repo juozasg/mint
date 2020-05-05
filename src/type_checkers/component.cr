@@ -64,8 +64,8 @@ module Mint
 
       if node.name == "Main" && (property = node.properties.first?)
         raise ComponentMainProperty, {
-          "property" => property,
-          "node"     => node,
+          "property_node" => property,
+          "node"          => node,
         }
       end
 
@@ -192,6 +192,8 @@ module Mint
               "node"     => function,
               "got"      => type,
             } unless Comparer.compare(type, VOID_FUNCTION)
+          else
+            # ignore
           end
         end
       end

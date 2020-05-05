@@ -1,15 +1,11 @@
-development:
-	crystal build src/mint.cr -o mint-dev -p --error-trace && \
-	mv mint-dev ~/.bin/mint-dev && rm -f mint-dev.dwarf && mint-dev
-
 build:
-	crystal build src/mint.cr -o mint -p --error-trace && mv mint ~/.bin/mint && mint
+	shards build --error-on-warnings --error-trace
 
-test:
-	crystal spec -p --error-trace && bin/ameba
+test-core: build
+	cd core/tests && ../../bin/mint test
 
-test-core:
-	crystal build src/mint.cr -o mint -p --error-trace && cd core/tests && ../../mint test && cd ../../ && rm -f mint mint.dwarf
+development: build
+	cp bin/mint ~/.bin/mint-dev
 
 documentation:
 	rm -rf docs && crystal docs
