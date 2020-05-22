@@ -1,4 +1,11 @@
 module LSP
+  struct WorkspaceEdit
+    include JSON::Serializable
+
+    @[JSON::Field(key: "documentChanges")]
+    property document_changes : Bool
+  end
+
   struct WorkspaceClientCapabilities
     include JSON::Serializable
 
@@ -6,6 +13,6 @@ module LSP
     property apply_edit : Bool
 
     @[JSON::Field(key: "workspaceEdit")]
-    property workspace_edit : NamedTuple(document_changes: Bool) | Nil
+    property workspace_edit : WorkspaceEdit | Nil
   end
 end

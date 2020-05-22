@@ -12,15 +12,20 @@ module Mint
       # Fallback handler for nodes that does not have a handler yet.
       def hover(node : Ast::Node, workspace) : Array(String | Nil)
         type =
-          workspace
-            .type_checker
-            .cache[node]?
-            .try(&.to_pretty)
+          type_of(node, workspace)
 
         [
           "DEBUG HOVER INFO: #{node.class}\n",
           type,
         ]
+      end
+
+      def type_of(node : Ast::Node, workspace)
+        workspace
+          .type_checker
+          .cache[node]?
+          .try(&.to_pretty)
+          .try { |value| "```\n#{value}\n```" }
       end
 
       def execute(server)

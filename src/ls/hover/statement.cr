@@ -3,11 +3,7 @@ module Mint
     class Hover < LSP::RequestMessage
       def hover(node : Ast::Statement, workspace) : Array(String | Nil)
         type =
-          workspace
-            .type_checker
-            .cache[node]?
-            .try(&.to_pretty)
-            .try { |value| "```\n#{value}\n```" }
+          type_of(node, workspace)
 
         head =
           node.target.try do |target|

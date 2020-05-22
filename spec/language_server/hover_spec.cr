@@ -24,7 +24,7 @@ describe "Language Server - Hover" do
           result:  {
             contents: [
               "**div**\n",
-              HTML.escape(Mint::LS::Hover::HTML_ELEMENTS["div"]),
+              "[MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div)",
             ],
           },
         }

@@ -28,3 +28,10 @@ Here are the nodes which reference an other hode on hover:
 
 - `EnumId` -> `Enum`
 - `ModuleAccess` -> `Function`
+
+Here are the nodes which will not have hover information:
+
+- CssSelector
+- CssNestedAt
+- CssFontFace
+- CssKeyframes
