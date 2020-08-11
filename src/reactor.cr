@@ -92,7 +92,7 @@ module Mint
 
     # Sets up the kemal routes...
     def setup_kemal
-      gzip true
+      gzip false
 
       get "/index.js" do |env|
         env.response.content_type = "application/javascript"
